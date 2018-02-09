@@ -21,10 +21,11 @@ void quicksort(int array[], int size)
 {
     printf("quicksort(");
     printArray(array, size);
-    printf(") =>");
+    printf(")");
 
-    _quicksort(array, 0, size - 1);
+    _quicksortRightPivot(array, 0, size - 1);
 
+    printf(" =>");
     printArray(array, size);
     printf("\n");
 }
@@ -55,4 +56,36 @@ int partition(int array[], int left, int right, int pivot)
     }
 
     return left;
+}
+
+void _quicksortRightPivot(int array[], int left, int right)
+{
+    if (left >= right) {
+        return;
+    }
+
+    int position = partitionByPivotIndex(array, left, right, right);
+
+    _quicksortRightPivot(array, left, position - 1);
+    _quicksortRightPivot(array, position, right);
+}
+
+int partitionByPivotIndex(int array[], int left, int right, int pivotIndex)
+{
+    int i = left - 1;
+
+    for(int j = left; j <= right; ++j) {
+        if (j == pivotIndex) {
+            continue;
+        }
+
+        if (array[j] <= array[pivotIndex]) {
+            ++i;
+            swap(array + i, array + j);
+        }
+    }
+    ++i;
+    swap(array + i, array + pivotIndex);
+
+    return i;
 }
