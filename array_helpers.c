@@ -1,4 +1,14 @@
 #include <stdio.h>
+#include <sodium.h>
+
+#define MAX_RANDOM_INT 100
+
+void populateArray(int array[], int size)
+{
+    for (int i = 0; i < size; ++i) {
+        array[i] = randombytes_uniform(MAX_RANDOM_INT);
+    }
+}
 
 void printArray(int array[], int size)
 {
