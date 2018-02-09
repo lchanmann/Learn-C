@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sodium.h>
 
-#define MAX_RANDOM_INT 100
+#define MAX_RANDOM_INT 10
 
 void populateArray(int array[], int size)
 {

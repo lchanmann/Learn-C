@@ -7,26 +7,60 @@
 
 int main(void)
 {
-    int size;
+    int array_0[] = { };
+    quicksort(array_0, 0);
 
-    for (size = 0; size < MAX_ARRAY_SIZE; ++size) {
-        int array[size];
+    int array_1[] = { 1 };
+    quicksort(array_1, 1);
 
-        populateArray(array, size);
-        quicksort(array, size);
-    }
+    int array_2[] = { 2, 1 };
+    quicksort(array_2, 2);
+
+    int array_2_sorted[] = { 1, 2 };
+    quicksort(array_2_sorted, 2);
+
+    int array_2_same[] = { 1, 1 };
+    quicksort(array_2_same, 2);
+
+    int array_even[4];
+    populateArray(array_even, 4);
+    quicksort(array_even, 4);
+
+    int array_odd[4];
+    populateArray(array_odd, 5);
+    quicksort(array_odd, 5);
+
+    int array[MAX_ARRAY_SIZE];
+    populateArray(array, MAX_ARRAY_SIZE);
+    quicksort(array, MAX_ARRAY_SIZE);
 }
 
 void quicksort(int array[], int size)
 {
+    int mem_size = size * sizeof(int);
+    int *array_orig = malloc(mem_size);
+
+    // Backup the original array
+    memcpy(array_orig, array, mem_size);
+
     printf("quicksort(");
     printArray(array, size);
-    printf(")");
+    printf("):\n");
 
-    _quicksortRightPivot(array, 0, size - 1);
-
-    printf(" =>");
+    // Default quicksort with partition walk from both sides
+    _quicksort(array, 0, size - 1);
+    printf("-- %-15s:", "default");
     printArray(array, size);
+    printf("\n");
+
+    // quicksort with the right most element as the pivot
+    memcpy(array, array_orig, mem_size);
+    _quicksortRightPivot(array, 0, size - 1);
+    printf("-- %-15s:", "right pivot");
+    printArray(array, size);
+    printf("\n");
+
+    // Spacing
     printf("\n");
 }
 
