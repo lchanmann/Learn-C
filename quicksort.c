@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "quicksort.h"
 #include "array_helpers.h"
 
