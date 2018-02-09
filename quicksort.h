@@ -1,2 +1,2 @@
 void quicksort(int array[], int left, int right);
-void printArray(int array[], int size);
+int partition(int array[], int left, int right, int pivot);
