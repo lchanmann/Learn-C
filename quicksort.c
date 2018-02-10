@@ -30,7 +30,7 @@ int main(void)
     int array_3_last_largest[] = { 2, 1, 3 };
     quicksort(array_3_last_largest, 3);
 
-    int array_3_middle_median[] = { 3, 1, 2 };
+    int array_3_middle_median[] = { 3, 2, 1 };
     quicksort(array_3_middle_median, 3);
 
     int array_even[4];
@@ -55,6 +55,7 @@ void quicksort(int array[], int size)
     memcpy(array_orig, array, mem_size);
 
     printf("quicksort(");
+    printArray(array, size);
     printf("):\n");
 
     // Default quicksort with partition walk from both sides
@@ -92,15 +93,24 @@ void _quicksort(int array[], int left, int right)
     int position = partition(array, left, right, pivot);
 
     _quicksort(array, left, position - 1);
+    // Include element at the position back in the tail recursion since it
+    // doesn't guarantee correct pivot position after partitioning.
     _quicksort(array, position, right);
 }
 
 int partition(int array[], int left, int right, int pivot)
 {
     while (left <= right) {
+        // Walk the left pointer until the element is greater than or equal to the pivot
         while (array[left] < pivot) ++left;
+
+        // Walk the right pointer until the element is small than or equal to the pivot
         while (array[right] > pivot) --right;
 
+        // Swapping two elements that are out of order. It would put the elements that
+        // are smaller than the pivot to the left and the ones greater than or equal
+        // to the pivot to the right but won't guarantee that the pivot would be in
+        // the correct position.
         if (left <= right) {
             swap(array + left, array + right);
             ++left; --right;
@@ -117,13 +127,10 @@ void _quicksortLeftPivot(int array[], int left, int right)
     }
 
     int pivot = array[left];
-    // The default partition will also work for quicksort using the first
-    // element as the pivot. For special case when array has only 2 elements
-    // the default _quicksort() is essentially equivalent to _quicksortLeftPivot().
-    int position = partition(array, left, right, pivot);
+    int position = partitionLeftPivot(array, left, right, pivot);
 
     _quicksortLeftPivot(array, left, position - 1);
-    _quicksortLeftPivot(array, position, right);
+    _quicksortLeftPivot(array, position + 1, right);
 }
 
 void _quicksortRightPivot(int array[], int left, int right)
@@ -133,13 +140,10 @@ void _quicksortRightPivot(int array[], int left, int right)
     }
 
     int pivot = array[right];
-    // When the last element is used as the pivot the default partition walk
-    // might NOT work because the partition point/position could overshoot the
-    // array upperbound index by 1 when the last element is the largest element.
     int position = partitionRightPivot(array, left, right, pivot);
 
     _quicksortRightPivot(array, left, position - 1);
-    _quicksortRightPivot(array, position, right);
+    _quicksortRightPivot(array, position + 1, right);
 }
 
 int partitionRightPivot(int array[], int left, int right, int pivot)
@@ -154,6 +158,22 @@ int partitionRightPivot(int array[], int left, int right, int pivot)
     }
     ++i;
     swap(array + i, array + right);
+
+    return i;
+}
+
+int partitionLeftPivot(int array[], int left, int right, int pivot)
+{
+    int i = right + 1;
+
+    for (int j = right; j > left; --j) {
+        if (array[j] >= pivot) {
+            --i;
+            swap(array + i, array + j);
+        }
+    }
+    --i;
+    swap(array + i, array + left);
 
     return i;
 }
