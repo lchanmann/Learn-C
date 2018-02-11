@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "quicksort.h"
 #include "array_helpers.h"
 
@@ -188,9 +189,11 @@ void _quicksortIterative(int array[], int size)
 {
     int low = 0;
     int high = size - 1;
-    int stack[size];
 
+    int stackSize = (size == 0 ? 0 : 2 * log(size) / log(2));     // 2 * log2(size)
+    int stack[stackSize];
     int top = -1;
+
     stack[++top] = low;
     stack[++top] = high;
 
@@ -207,7 +210,8 @@ void _quicksortIterative(int array[], int size)
             stack[++top] = position - 1;
         }
 
-        // If there is a right tail it will be on the top of the stack for processing
+        // If there is a right tail it will be on the top of the stack
+        // for processing next
         if (position < high) {
             stack[++top] = position;
             stack[++top] = high;
