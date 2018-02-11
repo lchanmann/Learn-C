@@ -10,4 +10,6 @@ void _quicksortRightPivot(int array[], int left, int right);
 int partitionRightPivot(int array[], int left, int right, int pivot);
 int partitionLeftPivot(int array[], int left, int right, int pivot);
 
+void _quicksortIterative(int array[], int size);
+
 #endif /* _QUICK_SORT_H_ */

@@ -78,6 +78,12 @@ void quicksort(int array[], int size)
     printArray(array, size);
     printf("\n");
 
+    // iterative quicksort
+    memcpy(array, array_orig, mem_size);
+    _quicksortIterative(array, size);
+    printf("-- %-15s:", "iterative");
+    printArray(array, size);
+
 
     // Spacing
     printf("\n");
@@ -176,4 +182,35 @@ int partitionLeftPivot(int array[], int left, int right, int pivot)
     swap(array + i, array + left);
 
     return i;
+}
+
+void _quicksortIterative(int array[], int size)
+{
+    int low = 0;
+    int high = size - 1;
+    int stack[size];
+
+    int top = -1;
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0) {
+        high = stack[top--];
+        low = stack[top--];
+
+        int pivot = array[(low + high) / 2];
+        int position = partition(array, low, high, pivot);
+
+        // Add left tail to the stack
+        if (position - 1 > low) {
+            stack[++top] = low;
+            stack[++top] = position - 1;
+        }
+
+        // If there is a right tail it will be on the top of the stack for processing
+        if (position < high) {
+            stack[++top] = position;
+            stack[++top] = high;
+        }
+    }
 }
