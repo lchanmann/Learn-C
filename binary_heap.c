@@ -22,18 +22,27 @@ int main(void)
     int size = 0;
     int *heap = NULL;
 
-    //              15
-    BH_insert(&heap, size++, 15);
+    //              12
+    BH_insert(&heap, size++, 12);
 
     //              11
     //             /
-    //           15
+    //           12
     BH_insert(&heap, size++, 11);
 
     //              5
     //            /   \
-    //          15     11
+    //          12     11
     BH_insert(&heap, size++, 5);
+
+    //              5
+    //            /   \
+    //          10     8
+    //         /  \   /
+    //       12   15 11
+    BH_insert(&heap, size++, 10);
+    BH_insert(&heap, size++, 15);
+    BH_insert(&heap, size++, 8);
 
     printArray(heap, size);
     free(heap);
