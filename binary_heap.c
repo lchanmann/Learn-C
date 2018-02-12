@@ -44,7 +44,22 @@ int main(void)
     BH_insert(&heap, size++, 15);
     BH_insert(&heap, size++, 8);
 
+    printf("heap =");
     printArray(heap, size);
+    printf("\n");
+
+    int min = BH_extractMin(&heap, &size);
+    printf("The smallest element is %d\n", min);
+
+    //              8
+    //            /   \
+    //          10     11
+    //         /  \
+    //       12   15
+    printf("heap =");
+    printArray(heap, size);
+    printf("\n");
+
     free(heap);
 }
 
@@ -69,5 +84,43 @@ void BH_insert(int **heapPtr, int size, int data)
 
         swap(*heapPtr + index, *heapPtr + parent);
         index = parent;
+    }
+}
+
+int BH_extractMin(int **heapPtr, int *size)
+{
+    int min = (*heapPtr)[0];
+
+    BH_delete(heapPtr, size, 0);
+    return min;
+}
+
+void BH_delete(int **heapPtr, int *size, int index)
+{
+    int newSize = --(*size);
+
+    // Replace the deleted element with the last element
+    (*heapPtr)[index] = (*heapPtr)[newSize];
+
+    // Shrink the memory block for the heap
+    *heapPtr = (int *) realloc(*heapPtr, newSize * sizeof(int));
+
+    // Bubble down the replacement element
+    while (1) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+
+        // No more children to process
+        if (left > newSize - 1) return;
+
+        // Find the smallest children
+        int k = (right < newSize - 1 && (*heapPtr)[right] < (*heapPtr)[left]) ? right : left;
+
+        // If the current element is the smallest the heap is in good shape
+        if ((*heapPtr)[index] < (*heapPtr)[k]) return;
+
+        // Swap the current element with its smaller child
+        swap(*heapPtr + index, *heapPtr + k);
+        index = k;
     }
 }
