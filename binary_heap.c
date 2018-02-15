@@ -22,18 +22,32 @@ int main(void)
     int size = 0;
     int *heap = NULL;
 
+    printf("Insert data into the binary heap:\n");
+
     //              12
     BH_insert(&heap, size++, 12);
+
+    printf("-- heap =");
+    printArray(heap, size);
+    printf("\n");
 
     //              11
     //             /
     //           12
     BH_insert(&heap, size++, 11);
 
+    printf("-- heap =");
+    printArray(heap, size);
+    printf("\n");
+
     //              5
     //            /   \
     //          12     11
     BH_insert(&heap, size++, 5);
+
+    printf("-- heap =");
+    printArray(heap, size);
+    printf("\n");
 
     //              5
     //            /   \
@@ -44,19 +58,19 @@ int main(void)
     BH_insert(&heap, size++, 15);
     BH_insert(&heap, size++, 8);
 
-    printf("heap =");
+    printf("-- heap =");
     printArray(heap, size);
     printf("\n");
 
     int min = BH_extractMin(&heap, &size);
-    printf("The smallest element is %d\n", min);
+    printf("Extract the smallest element (%d) from the heap:\n", min);
 
     //              8
     //            /   \
     //          10     11
     //         /  \
     //       12   15
-    printf("heap =");
+    printf("-- heap =");
     printArray(heap, size);
     printf("\n");
 
