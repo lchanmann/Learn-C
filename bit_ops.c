@@ -34,6 +34,21 @@ int main(void)
             INT_MAX + 1 == INT_MIN ? "TRUE" : "FALSE",
             INT_MIN - INT_MAX);
 
+    int i = 0;
+
+    do {
+        ++i;
+        printf("1 << %2d: %-11d, 1 >> %d: %d\n", i, 1 << i, i, 1 >> i);
+    } while ((1 << i) != 1);
+    printf("\n");
+
+    i = 0;
+    do {
+        ++i;
+        printf("-1 << %2d: %-11d, -1 >> %d: %d\n", i, -1 << i, i, -1 >> i);
+    } while (-1 << i != -1);
+    printf("\n");
+
     /*
      * ------------------------------------
      * AND (&), OR (|) and XOR(^) operations
