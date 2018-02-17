@@ -7,4 +7,7 @@ binary_heap:
 bit_ops:
 	gcc bit_ops.c -o bin/bit_ops && ./bin/bit_ops
 
+readers_writers:
+	gcc readers_writers.c -lpthread -lsodium -o bin/readers_writers && ./bin/readers_writers
+
 .PHONY: quicksort binary_heap bit_ops
