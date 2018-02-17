@@ -19,6 +19,7 @@ pthread_cond_t gReadPhase = PTHREAD_COND_INITIALIZER;
 pthread_cond_t gWritePhase = PTHREAD_COND_INITIALIZER;
 
 int gReaderCount = 0;
+int gWaitingReaders = 0;
 
 
 int main(void)
@@ -69,9 +70,11 @@ void *readSharedValue(void *threadId)
 
         // Enter critical section
         pthread_mutex_lock(&gSharedValueLock);
+            ++gWaitingReaders;
             while (gReaderCount == -1) {
                 pthread_cond_wait(&gReadPhase, &gSharedValueLock);
             }
+            --gWaitingReaders;
             numReaders = ++gReaderCount;
         pthread_mutex_unlock(&gSharedValueLock);
 
@@ -102,9 +105,10 @@ void *writeSharedValue(void * threadId)
         // Enter critical section
         pthread_mutex_lock(&gSharedValueLock);
             while (gReaderCount != 0) {
-                pthread_cond_wait(&gReadPhase, &gSharedValueLock);
+                pthread_cond_wait(&gWritePhase, &gSharedValueLock);
             }
-            numReaders = --gReaderCount;
+            gReaderCount = -1;
+            numReaders = gReaderCount;
         pthread_mutex_unlock(&gSharedValueLock);
 
         // Read data
@@ -113,7 +117,17 @@ void *writeSharedValue(void * threadId)
         // Exit critical section
         pthread_mutex_lock(&gSharedValueLock);
             gReaderCount = 0;
-            pthread_cond_broadcast(&gReadPhase);
+            if (gWaitingReaders > 0) {
+                if (gWaitingReaders == 1) {
+                    pthread_cond_signal(&gReadPhase);
+                }
+                else {
+                    pthread_cond_broadcast(&gReadPhase);
+                }
+            }
+            else {
+                pthread_cond_signal(&gWritePhase);
+            }
         pthread_mutex_unlock(&gSharedValueLock);
     }
 
