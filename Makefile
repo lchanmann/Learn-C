@@ -1,13 +1,19 @@
-quicksort:
-	gcc quicksort.c array_helpers.c -lsodium -o bin/quicksort && ./bin/quicksort
+# Global variables
+CC = gcc
+CFLAGS = -Wall -std=c11
+LDFLAGS = -lsodium -lpthread
 
-binary_heap:
-	gcc binary_heap.c array_helpers.c -lsodium -o bin/binary_heap && ./bin/binary_heap
+OUTPUT_OPTION = -o bin/$@
+BUILD.c = $(CC) $(CFLAGS) $(LDFLAGS) $(OUTPUT_OPTION) $@.c
+RUN_IT = ./bin/$@
 
-bit_ops:
-	gcc bit_ops.c -o bin/bit_ops && ./bin/bit_ops
+quicksort binary_heap mergesort: bin/array_helpers.o
+	$(BUILD.c) $^ && $(RUN_IT)
 
-readers_writers:
-	gcc readers_writers.c -lpthread -lsodium -o bin/readers_writers && ./bin/readers_writers
+bit_ops readers_writers:
+	$(BUILD.c) && $(RUN_IT)
 
-.PHONY: quicksort binary_heap bit_ops
+bin/array_helpers.o: array_helpers.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+.PHONY: quicksort binary_heap bit_ops readers_writers mergesort
