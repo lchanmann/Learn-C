@@ -4,15 +4,64 @@
 #include "array_helpers.h"
 #include "mergesort.h"
 
+/* Global constants */
+#define MAX_ARRAY_SIZE 20
+
+/* Helper functions declaration */
+void run_mergesort(int array[], int size);
+
+
 int main(void)
 {
-    int array[] = { 38, 27, 43, 9, 82, 10 };
-    int size = sizeof(array) / sizeof(int);
+    int array_0[] = { };
+    run_mergesort(array_0, 0);
 
-    mergesort(array, 0, size - 1);
-    printArray(array, size);
+    int array_1[] = { 1 };
+    run_mergesort(array_1, 1);
+
+    int array_2[] = { 2, 1 };
+    run_mergesort(array_2, 2);
+
+    int array_2_sorted[] = { 1, 2 };
+    run_mergesort(array_2_sorted, 2);
+
+    int array_2_same[] = { 1, 1 };
+    run_mergesort(array_2_same, 2);
+
+    int array_3_first_smallest[] = { 1, 3, 2 };
+    run_mergesort(array_3_first_smallest, 3);
+
+    int array_3_last_largest[] = { 2, 1, 3 };
+    run_mergesort(array_3_last_largest, 3);
+
+    int array_3_middle_median[] = { 3, 2, 1 };
+    run_mergesort(array_3_middle_median, 3);
+
+    int array_even[4];
+    populateArray(array_even, 4);
+    run_mergesort(array_even, 4);
+
+    int array_odd[4];
+    populateArray(array_odd, 5);
+    run_mergesort(array_odd, 5);
+
+    int array[MAX_ARRAY_SIZE];
+    populateArray(array, MAX_ARRAY_SIZE);
+    run_mergesort(array, MAX_ARRAY_SIZE);
 }
 
+
+void run_mergesort(int array[], int size)
+{
+    printf("mergesort(");
+    printArray(array, size);
+    printf(") ->");
+
+    mergesort(array, 0, size - 1);
+
+    printArray(array, size);
+    printf("\n");
+}
 
 void mergesort(int array[], int left, int right)
 {
