@@ -88,8 +88,12 @@ void *handle_connection(void *socket)
     strcpy(message, "Connection established!\n");
     write(client_socket_fd, message, strlen(message));
 
-    bzero(buffer, BUFFER_SIZE);
     while ((read_size = recv(client_socket_fd, buffer, BUFFER_SIZE, 0)) > 0) {
+        // check for blank line
+        if (read_size == 1 && buffer[0] == '\n') {
+            continue;
+        }
+
         fprintf(stdout, "-- Received: %s", buffer);
 
         strcpy(message, "-- ");
@@ -100,6 +104,7 @@ void *handle_connection(void *socket)
             fprintf(stderr, "%s", error_message);
             pthread_exit(error_message);
         }
+        bzero(buffer, BUFFER_SIZE);
     }
 
     if (read_size == 0) {
