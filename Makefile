@@ -10,8 +10,8 @@ RUN_IT = ./bin/$@
 quicksort binary_heap mergesort: bin/array_helpers.o
 	$(BUILD.c) $@.c $^ && $(RUN_IT)
 
-bit_ops readers_writers:
-	$(BUILD.c) && $(RUN_IT)
+bit_ops readers_writers socket_server:
+	$(BUILD.c) $@.c && $(RUN_IT)
 
 bin/array_helpers.o: array_helpers.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -23,4 +23,4 @@ bin/array_helpers.o: array_helpers.c
 	$(BUILD.c) -D_DEBUG_ -g $*.c $^ && gdb $(RUN_IT)
 
 
-.PHONY: quicksort binary_heap bit_ops readers_writers mergesort
+.PHONY: quicksort binary_heap bit_ops readers_writers mergesort socket_server
