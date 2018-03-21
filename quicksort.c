@@ -88,6 +88,9 @@ void quicksort(int array[], int size)
 
     // Spacing
     printf("\n");
+
+    // Free
+    free(array_orig);
 }
 
 void _quicksort(int array[], int left, int right)

@@ -43,6 +43,9 @@ int main(void)
     qsort(array, MAX_ARRAY_SIZE, sizeof(int), compare);
     printf("sorted:");
     printArray(array, MAX_ARRAY_SIZE);
+
+    // Free
+    free(array_orig);
 }
 
 int quickselect(int k, int array[], int size)
