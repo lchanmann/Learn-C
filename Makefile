@@ -10,7 +10,7 @@ RUN_IT = ./bin/$@
 quicksort binary_heap mergesort quickselect bubblesort: bin/array_helpers.o
 	$(BUILD.c) $@.c $^ && $(RUN_IT)
 
-bit_ops readers_writers socket_server:
+bit_ops readers_writers socket_server graph_adj:
 	$(BUILD.c) $@.c && $(RUN_IT)
 
 bin/array_helpers.o: array_helpers.c
