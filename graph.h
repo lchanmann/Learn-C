@@ -25,5 +25,6 @@ typedef struct _Graph {
 Graph *NewGraph(int n);
 void DestroyGraph(Graph *graph);
 void AddEdge(int u, int v, Graph *graph);
+int *Neighbors(int v, Graph *graph);
 
 #endif /* _GRAPH_H_ */

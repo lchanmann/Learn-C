@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "graph.h"
+#include "array_helpers.h"
 
 /* Global macros */
 #define N_NODES 5
@@ -12,6 +13,7 @@
 int main(void)
 {
     Graph *graph = NewGraph(N_NODES);
+    int i, *neighbors = NULL;
 
     printf("Add links for node 0\n");
     AddEdge(0, 1, graph);   // 0 -> 1
@@ -28,9 +30,21 @@ int main(void)
     printf("Adding duplicate links would not be counted\n");
     printf("-- 0 has %d edges\n", graph->adjacencyList[0].size);
 
+    // print all neighbor nodes
+    for (i = 0; i < N_NODES; ++i) {
+        neighbors = Neighbors(i, graph);
+        printf("-- %d's neighbors: {", i);
+        printArray(neighbors, graph->adjacencyList[i].size);
+        printf(" }\n");
+
+        // free
+        free(neighbors);
+        neighbors = NULL;
+    }
+
     // print all adjacency list size
     printf("Adjacency list size:\n");
-    for (int i = 0; i < N_NODES; ++i) {
+    for (i = 0; i < N_NODES; ++i) {
         printf("-- %d has %d edges\n", i, graph->adjacencyList[i].size);
     }
 
@@ -142,4 +156,18 @@ void AddEdge(int u, int v, Graph *graph)
         AddItem(&graph->adjacencyList[v], u);
         graph->edges += 1;
     }
+}
+
+int *Neighbors(int v, Graph *graph)
+{
+    int *neighbors = malloc(graph->adjacencyList[v].size * sizeof(int));
+    LinkedList *list = &graph->adjacencyList[v];
+    LinkedListNode *current = list->head;
+    int i = 0;
+
+    while (NULL != current) {
+        neighbors[i++] = current->data;
+        current = current->next;
+    }
+    return neighbors;
 }

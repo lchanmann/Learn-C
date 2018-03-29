@@ -7,10 +7,10 @@ OUTPUT_OPTION = -o bin/$@
 BUILD.c = $(CC) $(CFLAGS) $(LDFLAGS) $(OUTPUT_OPTION)
 RUN_IT = ./bin/$@
 
-quicksort binary_heap mergesort quickselect bubblesort: bin/array_helpers.o
+quicksort binary_heap mergesort quickselect bubblesort graph_adj: bin/array_helpers.o
 	$(BUILD.c) $@.c $^ && $(RUN_IT)
 
-bit_ops readers_writers socket_server graph_adj:
+bit_ops readers_writers socket_server:
 	$(BUILD.c) $@.c && $(RUN_IT)
 
 bin/array_helpers.o: array_helpers.c
