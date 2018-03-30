@@ -26,11 +26,25 @@ typedef struct _Graph {
     };
 } Graph;
 
+typedef struct _NodeList {
+    int *data;
+    int size;
+} NodeList;
+
 
 /* Function declaration */
 Graph *NewGraph(int n);
 void DestroyGraph(Graph *graph);
 void AddEdge(int u, int v, Graph *graph);
-int *Neighbors(int v, Graph *graph);
+NodeList *Neighbors(int v, Graph *graph);
+
+void DestroyNodeList(NodeList *list)
+{
+    if (NULL != list) {
+        free(list->data);
+        free(list);
+    }
+    list = NULL;
+}
 
 #endif /* _GRAPH_H_ */

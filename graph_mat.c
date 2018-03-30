@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Local h files */
 #include "graph.h"
@@ -19,17 +20,24 @@ int main(void)
     // adding already existing edge has no effect on the adjacency matrix
     AddEdge(0, 4, graph);
 
+    // adding edge 1 -> 2 is the same as 2 -> 1
     AddEdge(1, 2, graph);   // 1 -> 2
-    AddEdge(1, 3, graph);   // 1 -> 3
+    AddEdge(2, 1, graph);   // 2 -> 1
 
     // do not allow recursive edge to itself
     AddEdge(3, 3, graph);
     printf("Adjacency matrix:\n");
     printTable(graph->adjacencyMatrix, N_NODES, N_NODES);
-    printf("\n");
+
+    NodeList *neighbors = Neighbors(0, graph);
+    // print neighbors of node 0
+    printf("Node 0's neighbors: {");
+    printArray(neighbors->data, neighbors->size);
+    printf(" }\n");
 
     // free
     DestroyGraph(graph);
+    DestroyNodeList(neighbors);
 }
 
 Graph *NewGraph(int n)
@@ -74,4 +82,27 @@ void AddEdge(int u, int v, Graph *graph)
         graph->adjacencyMatrix[u * N_NODES + v] = 1;
         graph->adjacencyMatrix[v * N_NODES + u] = 1;
     }
+}
+
+NodeList *Neighbors(int v, Graph *graph)
+{
+    NodeList *neighbors = malloc(sizeof(NodeList));
+    neighbors->size = 0;
+
+    int i = 0, j;
+    int temp[N_NODES - 1];
+    int memSize = 0;
+
+    for (j = 0; j < N_NODES; ++j) {
+        if (graph->adjacencyMatrix[v * N_NODES + j] == 1) {
+            temp[i++] = j;
+            neighbors->size += 1;
+        }
+    }
+    // copy temp to neighbor data
+    memSize = neighbors->size * sizeof(int);
+    neighbors->data = malloc(memSize);
+    memcpy(neighbors->data, temp, memSize);
+
+    return neighbors;
 }
