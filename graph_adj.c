@@ -7,7 +7,6 @@
 
 /* Global macros */
 #define N_NODES 5
-#define VALID_BOUND(I) ((I) >= 0 && (I) < N_NODES)
 
 
 int main(void)

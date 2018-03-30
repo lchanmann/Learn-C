@@ -1,6 +1,10 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+/* Define macros */
+#define VALID_BOUND(I) ((I) >= 0 && (I) < N_NODES)
+
+/* Custom types */
 typedef struct _LinkedListNode {
     int data;
     struct _LinkedListNode *next;
