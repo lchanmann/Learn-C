@@ -27,3 +27,13 @@ void swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
+
+void printTable(int array[], int rows, int cols)
+{
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            printf(" %3d", array[i * cols + j]);
+        }
+        printf("\n");
+    }
+}

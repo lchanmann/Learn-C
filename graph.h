@@ -21,11 +21,13 @@ typedef struct _Graph {
     int maxEdges;
     union {
         LinkedList *adjacencyList;
-        int **adjacencyMatrix;
+        // store adjacency matrix in 1-dimensional array
+        int *adjacencyMatrix;
     };
 } Graph;
 
 
+/* Function declaration */
 Graph *NewGraph(int n);
 void DestroyGraph(Graph *graph);
 void AddEdge(int u, int v, Graph *graph);
