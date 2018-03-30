@@ -12,7 +12,8 @@
 int main(void)
 {
     Graph *graph = NewGraph(N_NODES);
-    int i, *neighbors = NULL;
+    int i;
+    NodeList *neighbors = NULL;
 
     printf("Add links for node 0\n");
     AddEdge(0, 1, graph);   // 0 -> 1
@@ -32,13 +33,12 @@ int main(void)
     // print all neighbor nodes
     for (i = 0; i < N_NODES; ++i) {
         neighbors = Neighbors(i, graph);
-        printf("-- %d's neighbors: {", i);
-        printArray(neighbors, graph->adjacencyList[i].size);
+        printf("-- Node %d's neighbors: {", i);
+        printArray(neighbors->data, neighbors->size);
         printf(" }\n");
 
         // free
-        free(neighbors);
-        neighbors = NULL;
+        DestroyNodeList(neighbors);
     }
 
     // print all adjacency list size
@@ -157,15 +157,18 @@ void AddEdge(int u, int v, Graph *graph)
     }
 }
 
-int *Neighbors(int v, Graph *graph)
+NodeList *Neighbors(int v, Graph *graph)
 {
-    int *neighbors = malloc(graph->adjacencyList[v].size * sizeof(int));
+    NodeList *neighbors = malloc(sizeof(NodeList));
+    neighbors->size = graph->adjacencyList[v].size;
+    neighbors->data = malloc(neighbors->size * sizeof(int));
+
     LinkedList *list = &graph->adjacencyList[v];
     LinkedListNode *current = list->head;
     int i = 0;
 
     while (NULL != current) {
-        neighbors[i++] = current->data;
+        neighbors->data[i++] = current->data;
         current = current->next;
     }
     return neighbors;
